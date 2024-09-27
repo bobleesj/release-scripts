@@ -25,11 +25,14 @@ on:
 
 jobs:
   coverage:
+    defaults:
+      run:
+        shell: bash -l {0}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
-        version: [12, 14, 16]
-    runs-on: ubuntu-latest
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.10, 3.11, 3.12]
     steps:
       - name: Check out ${{ inputs.project }}
         uses: actions/checkout@v4
