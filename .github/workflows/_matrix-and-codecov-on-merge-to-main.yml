@@ -25,10 +25,10 @@ on:
 
 jobs:
   coverage:
-    defaults:
-      run:
-        shell: bash -l {0}
-
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        version: [12, 14, 16]
     runs-on: ubuntu-latest
     steps:
       - name: Check out ${{ inputs.project }}
