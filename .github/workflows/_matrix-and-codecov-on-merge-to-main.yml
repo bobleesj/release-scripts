@@ -28,6 +28,7 @@ jobs:
     defaults:
       run:
         shell: bash -l {0}
+
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -42,6 +43,7 @@ jobs:
         with:
           activate-environment: test
           auto-update-conda: true
+          environment-file: environment.yml
           auto-activate-base: false
           python-version: ${{ matrix.python-version }}
 
