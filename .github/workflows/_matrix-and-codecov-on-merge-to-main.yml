@@ -78,9 +78,6 @@ jobs:
           
       - name: Validate ${{ inputs.project }}
         run: |
-          if ${{ matrix.os.matrix.os }} == 'ubuntu-latest && ${{ inputs.headless }}; then
-            export DISPLAY=:99
-          fi
           pytest --cov
           coverage report -m
           codecov
