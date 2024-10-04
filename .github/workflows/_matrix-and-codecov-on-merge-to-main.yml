@@ -65,7 +65,7 @@ jobs:
           python -m pip install . --no-deps
 
       - name: Start Xvfb for ${{ matrix.os }}
-        if: matrix.os == 'ubuntu-latest' && ${{ inputs.headless }}
+        if: ${{ matrix.os }} == 'ubuntu-latest' && ${{ inputs.headless }}
         run: |
           sudo apt-get install -y xvfb
           export DISPLAY=:99
@@ -73,9 +73,6 @@ jobs:
 
       - name: Validate ${{ inputs.project }}
         run: |
-          if [ "$RUNNER_OS" == "Linux" ] && ${{ inputs.headless }}; then
-            export DISPLAY=:99
-          fi
           pytest --cov
           coverage report -m
           codecov
