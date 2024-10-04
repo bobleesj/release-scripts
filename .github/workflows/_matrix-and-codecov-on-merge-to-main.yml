@@ -64,12 +64,7 @@ jobs:
           fi
           python -m pip install . --no-deps
 
-      - name: Debug output
-        run: |
-          echo "OS: ${{ matrix.os }}"
-          echo "Headless: ${{ inputs.headless }}"
-
-      - name: Start Xvfb for ${{ matrix.os }}
+      - name: Start Xvfb for ubuntu-latest only
         if: matrix.os == 'ubuntu-latest' && inputs.headless
         run: |
           sudo apt-get install -y xvfb
