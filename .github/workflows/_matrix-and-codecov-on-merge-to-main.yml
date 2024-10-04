@@ -64,7 +64,7 @@ jobs:
           fi
           python -m pip install . --no-deps
 
-      - name: Start Xvfb
+      - name: Start Xvfb for ${{ matrix.os }}
         if: matrix.os == 'ubuntu-latest' && ${{ inputs.headless }}
         run: |
           sudo apt-get install -y xvfb
