@@ -78,9 +78,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   pypi-publish:
-    needs: [github-pre-release, github-release]
-    runs-on: ubuntu-latest
     if: needs.github-pre-release.result == 'success' || needs.github-release.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check job result
+      run: |
+        echo "Pre-release result: ${{ needs.github-pre-release.result }}"
+        echo "Release result: ${{ needs.github-release.result }}"
+
     steps:
       - uses: actions/download-artifact@v4
         with:
