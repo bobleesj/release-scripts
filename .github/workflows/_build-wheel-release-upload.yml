@@ -82,11 +82,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check job result
-      run: |
-        echo "Pre-release result: ${{ needs.github-pre-release.result }}"
-        echo "Release result: ${{ needs.github-release.result }}"
+        run: |
+          echo "Pre-release result: ${{ needs.github-pre-release.result }}"
+          echo "Release result: ${{ needs.github-release.result }}"
 
-    steps:
       - uses: actions/download-artifact@v4
         with:
           name: Packages
