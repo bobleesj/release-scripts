@@ -45,7 +45,7 @@ jobs:
           branch: main
 
   github-pre-release:
-    needs: [build-package]
+    needs: [update-changelog]
     if: contains(github.ref, 'rc')
     runs-on: ubuntu-latest
     steps:
@@ -58,7 +58,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   github-release:
-    needs: [build-package, update-changelog]
+    needs: [update-changelog]
     if: "!contains(github.ref, 'rc')"
     runs-on: ubuntu-latest
     steps:
@@ -78,8 +78,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   pypi-publish:
-    needs: [build-package]
+    needs: [github-pre-release, github-release]
     runs-on: ubuntu-latest
+    if: >
+        needs.github-pre-release.result == 'success' || 
+        needs.github-release.result == 'success'
     steps:
       - uses: actions/download-artifact@v4
         with:
