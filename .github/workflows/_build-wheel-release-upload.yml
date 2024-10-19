@@ -46,7 +46,7 @@ jobs:
 
   github-pre-release:
     needs: [update-changelog]
-    if: contains(github.ref, 'rc')
+    if: contains(github.ref, 'rc') && needs.update-changelog.result == 'skipped'
     runs-on: ubuntu-latest
     steps:
       - name: Generate GH release notes for pre-release
@@ -78,6 +78,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   pypi-publish:
+    #  (whether they succeed, fail, or skip)
     needs: [github-pre-release, github-release]
     runs-on: ubuntu-latest
     if: >
