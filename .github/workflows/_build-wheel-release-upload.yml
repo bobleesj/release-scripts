@@ -80,15 +80,17 @@ jobs:
   pypi-publish:
     needs: [github-pre-release, github-release]
     runs-on: ubuntu-latest
-    if: always()  # Ensures that this job always runs regardless of the outcome of needs
+    if: always()  # This job will always initiate regardless of the success or failure of the needed jobs
     steps:
-      - name: Check Dependency Results
+      - name: Fail pypi publish step if GitHub release step failed
         run: |
-          if [ "${{ needs.github-pre-release.result }}" != 'success' ] && [ "${{ needs.github-release.result }}" != 'success' ]; then
-            echo "Both pre-release and release jobs failed; exiting..."
+          if [ "${{ needs.github-pre-release.result }}" == 'success' ] || [ "${{ needs.github-release.result }}" == 'success' ]; then
+            echo "Ready for PyPI release..."
+          else
+            echo "Previous GitHub release step failed; exiting..."
             exit 1
           fi
-      
+        
       - name: Publish to PyPI
         run: echo "Publishing to PyPI"
 
