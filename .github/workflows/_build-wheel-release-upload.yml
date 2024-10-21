@@ -32,7 +32,7 @@ jobs:
             echo "tag_valid=true" >> $GITHUB_OUTPUT
           fi
 
-  release-privilege-check:
+  privilege-check:
     runs-on: ubuntu-latest
     steps:
       - name: Check user role
@@ -45,7 +45,7 @@ jobs:
           echo "User sbillinge is allowed to run this workflow."
         
   build-package:
-    needs: [tag-check, release-privilege-check]
+    needs: [tag-check, privilege-check]
     if: needs.tag-check.outputs.tag_valid == 'true'
     runs-on: ubuntu-latest
     steps:
