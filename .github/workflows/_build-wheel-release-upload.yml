@@ -12,6 +12,9 @@ on:
       PYPI_TOKEN:
         description: 'PyPI token'
         required: true
+      PAT_TOKEN:
+        description: 'GitHub Personal Access Token'
+        required: true
 
 jobs:
   build-package:
@@ -31,6 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
+          token: ${{ secrets.PAT }}
 
       - name: Update CHANGELOG.rst with the latest news
         run: |
