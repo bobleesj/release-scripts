@@ -1,0 +1,13 @@
+name: Build wheel and sdist for a pure Python package
+
+on:
+  workflow_call:
+
+jobs:
+  tag-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: hynek/build-and-inspect-python-package@v2

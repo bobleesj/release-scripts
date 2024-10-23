@@ -22,12 +22,7 @@ jobs:
 
   build-package:
     needs: [tag-privilege-check]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
-      - uses: hynek/build-and-inspect-python-package@v2
+    uses: bobleesj/release-scripts/.github/workflows/_build_pure_python_package.yml@v0
 
   update-changelog:
     needs: [build-package]
