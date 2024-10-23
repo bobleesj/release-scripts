@@ -18,7 +18,7 @@ on:
 
 jobs:
   tag-privilege-check:
-    uses: bobleesj/release-scripts/.github/workflows/_build-wheel-release-upload.yml@{{ VERSION/v0 }}
+    uses: bobleesj/release-scripts/.github/workflows/_release_tag_privilege_check.yml@{{ VERSION/v0 }}
 
   build-package:
     needs: [tag-privilege-check]
