@@ -22,7 +22,7 @@ jobs:
 
   build-package:
     needs: [tag-privilege-check]
-    uses: bobleesj/release-scripts/.github/workflows/_build_pure_python_package.yml@v0
+    uses: bobleesj/release-scripts/.github/workflows/_build-pure-python-package.yml@v0
 
   update-changelog:
     needs: [build-package]
