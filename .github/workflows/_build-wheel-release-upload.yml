@@ -36,7 +36,7 @@ jobs:
     uses: bobleesj/release-scripts/.github/workflows/_build-non-pure-python-package.yml@v0
 
   update-changelog:
-    needs: [build-pure-python-package, build-non-pure-python-package]
+    needs: [build-pure-python-package]
     if: "!contains(github.ref, 'rc')"
     runs-on: ubuntu-latest
     steps:
