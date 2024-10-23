@@ -36,8 +36,8 @@ jobs:
     uses: bobleesj/release-scripts/.github/workflows/_build-non-pure-python-package.yml@v0
 
   update-changelog:
-    needs: [build-pure-python-package]
-    if: "!contains(github.ref, 'rc')"
+    needs: [build-pure-python-package, build-non-pure-python-package]
+    if: "always() && !contains(github.ref, 'rc')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -45,7 +45,14 @@ jobs:
         with:
           ref: ${{ github.ref }}
           token: ${{ secrets.PAT_TOKEN }}
-
+      - name: Fail update-changelog job if building failed
+        run: |
+          if [ "${{ needs.build-pure-python-package.result }}" == 'success' ] || [ "${{ needs.build-non-pure-python-package }}" == 'success' ]; then
+            echo "Ready to update CHANGELOG.rst..."
+          else
+            echo "Previous build-package job failed; exiting..."
+            exit 1
+          fi
       - name: Update CHANGELOG.rst with the latest news
         run: |
           wget https://raw.githubusercontent.com/Billingegroup/release-scripts/v0/.github/workflows/update-changelog.py
@@ -58,6 +65,7 @@ jobs:
           commit_message: update changelog
           branch: main
 
+  # Check for rc as an ouput, use it as a variable
   github-pre-release:
     needs: [build-pure-python-package, build-non-pure-python-package]
     if: contains(github.ref, 'rc')
