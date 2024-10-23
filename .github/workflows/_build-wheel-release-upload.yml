@@ -59,7 +59,7 @@ jobs:
           branch: main
 
   github-pre-release:
-    needs: [build-package]
+    needs: [build-pure-python-package, build-non-pure-python-package]
     if: contains(github.ref, 'rc')
     runs-on: ubuntu-latest
     steps:
@@ -72,7 +72,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   github-release:
-    needs: [build-package, update-changelog]
+    needs: [build-pure-python-package, build-non-pure-python-package, update-changelog]
     if: "!contains(github.ref, 'rc')"
     runs-on: ubuntu-latest
     steps:

@@ -4,10 +4,11 @@ on:
   workflow_call:
 
 jobs:
-  tag-check:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
+      # Automatically upload sdist and .whl to ./dist folder
       - uses: hynek/build-and-inspect-python-package@v2
