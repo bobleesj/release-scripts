@@ -27,17 +27,16 @@ jobs:
 
   build-pure-python-package:
     needs: [tag-privilege-check]
-    if: inputs.c_extension == 'true'
+    if: inputs.c_extension == 'false'
     uses: bobleesj/release-scripts/.github/workflows/_build-non-pure-python-package.yml@v0
   
   build-non-pure-python-package:
     needs: [tag-privilege-check]
-    if: inputs.c_extension == 'false'
+    if: inputs.c_extension == 'true'
     uses: bobleesj/release-scripts/.github/workflows/_build-pure-python-package.yml@v0
   
   update-changelog:
     needs: [build-pure-python-package, build-non-pure-python-package]
-
     if: "!contains(github.ref, 'rc')"
     runs-on: ubuntu-latest
     steps:
