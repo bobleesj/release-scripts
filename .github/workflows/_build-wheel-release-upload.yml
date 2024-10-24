@@ -42,11 +42,6 @@ jobs:
     if: "always() && !contains(github.ref, 'rc')"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
-          token: ${{ secrets.PAT_TOKEN }}
       - name: Fail update-changelog job if building failed
         run: |
           if [ "${{ needs.build-pure-python-package.result }}" == 'success' ] || [ "${{ needs.build-non-pure-python-package }}" == 'success' ]; then
@@ -55,6 +50,13 @@ jobs:
             echo "Previous build-package job failed; exiting..."
             exit 1
           fi
+
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          token: ${{ secrets.PAT_TOKEN }}
+
       - name: Update CHANGELOG.rst with the latest news
         run: |
           wget https://raw.githubusercontent.com/Billingegroup/release-scripts/v0/.github/workflows/update-changelog.py
