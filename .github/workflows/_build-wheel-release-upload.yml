@@ -23,17 +23,17 @@ on:
 
 jobs:
   tag-privilege-check:
-    uses: bobleesj/release-scripts/.github/workflows/_release_tag_privilege_check.yml@v0
+    uses: ./.github/workflows/_release_tag_privilege_check.yml
     
   build-pure-python-package:
     needs: [tag-privilege-check]
     if: inputs.c_extension == false
-    uses: bobleesj/release-scripts/.github/workflows/_build-pure-python-package.yml@v0
+    uses: ./.github/workflows/_build-pure-python-package.yml
     
   build-non-pure-python-package:
     needs: [tag-privilege-check]
     if: inputs.c_extension == true
-    uses: bobleesj/release-scripts/.github/workflows/_build-non-pure-python-package.yml@v0
+    uses: ./.github/workflows/_build-non-pure-python-package.yml
 
   update-changelog:
     needs: [build-pure-python-package, build-non-pure-python-package]
