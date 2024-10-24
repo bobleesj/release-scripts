@@ -158,7 +158,6 @@ jobs:
 
   deploy-docs:
     needs: [pypi-publish]
-    name: Deploy docs on GitHub Pages
     uses: bobleesj/release-scripts/.github/workflows/_publish-docs-on-release.yml@v0
     with:
       project: ${{ inputs.project }}
