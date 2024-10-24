@@ -157,6 +157,8 @@ jobs:
           twine upload dist/* --verbose
 
   deploy-docs:
+    needs: [pypi-publish]
+    if: always()
     uses: ./.github/workflows/_publish-docs-on-release.yml
     with:
       project: ${{ inputs.project }}

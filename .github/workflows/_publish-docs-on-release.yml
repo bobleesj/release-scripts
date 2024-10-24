@@ -39,7 +39,7 @@ jobs:
           conda config --set always_yes yes
           --set changeps1 no
 
-      - name: IInstall ${{ inputs.project }} and docs requirements
+      - name: Install ${{ inputs.project }} and docs requirements
         run: |
           conda install --file requirements/conda.txt
           conda install --file requirements/docs.txt
