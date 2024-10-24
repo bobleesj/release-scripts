@@ -158,19 +158,7 @@ jobs:
 
   deploy-docs:
     needs: [pypi-publish]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Fail pypi-publish step if github-(pre)-release step failed
-        run: |
-            if [ "${{ needs.pypi-publish.result }}" == 'success' ]; then
-              echo "Ready to deploy docs..."
-            else
-              echo "Previous PyPI publish step failed; exiting..."
-              exit 1
-            fi
-      - name: Deploy docs
-        uses: bobleesj/release-scripts/.github/workflows/_publish-docs-on-release.yml@v0
-        with:
-          project: ${{ inputs.project }}
-          c_extension: ${{ inputs.c_extension }}
+    uses: bobleesj/release-scripts/.github/workflows/_publish-docs-on-release.yml@v0
+    with:
+      project: ${{ inputs.project }}
+      c_extension: ${{ inputs.c_extension }}
