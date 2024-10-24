@@ -120,7 +120,7 @@ jobs:
           draft: true  # FIXME: remove after testing
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  pypi-docs-publish:
+  pypi-publish:
     needs: [github-pre-release, github-release]
     runs-on: ubuntu-latest
     if: always()  # This job will always initiate regardless of the success or failure of the needed jobs
@@ -156,7 +156,20 @@ jobs:
         run: |
           twine upload dist/* --verbose
 
-      - name: Deploy docs on release
+  deploy-docs:
+    needs: [pypi-publish]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Fail pypi-publish step if github-(pre)-release step failed
+        run: |
+            if [ "${{ needs.pypi-publish.result }}" == 'success' ]; then
+              echo "Ready to deploy docs..."
+            else
+              echo "Previous PyPI publish step failed; exiting..."
+              exit 1
+            fi
+      - name: Deploy docs
         uses: bobleesj/release-scripts/.github/workflows/_publish-docs-on-release.yml@v0
         with:
           project: ${{ inputs.project }}
