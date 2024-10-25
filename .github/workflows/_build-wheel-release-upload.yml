@@ -134,11 +134,18 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/download-artifact@v4
+      - name: Download Wheel files
+        uses: actions/download-artifact@v4
         with:
-          pattern: '**/*'
+          pattern: '**/*.whl'  # Matches all .whl files
           path: dist
-          merge-multiple: true
+
+      - name: Download Source Distribution files
+        uses: actions/download-artifact@v4
+        with:
+          pattern: '**/*.tar.gz'  # Matches all .tar.gz files
+          path: dist
+
 
       - name: Setup Python for PyPI upload
         uses: actions/setup-python@v5
