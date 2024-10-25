@@ -136,7 +136,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          pattern: '**/*.{whl,tar.gz}'
+          pattern: '**/*'
           path: dist
           merge-multiple: true
 
