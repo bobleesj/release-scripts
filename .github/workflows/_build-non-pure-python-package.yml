@@ -104,10 +104,6 @@ jobs:
           path: dist
           merge-multiple: true
 
-      # FIXME: Remove this section
-      - name: List dist files
-        run: ls -la dist # Ensure files are downloaded and in the correct location
-    
       - name: Setup Python for PyPI upload
         uses: actions/setup-python@v5
         with:

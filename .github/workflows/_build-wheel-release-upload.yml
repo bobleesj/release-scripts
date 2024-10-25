@@ -136,7 +136,6 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          pattern: '**/*' # Make sure all files are downloaded, including wheels
           path: dist
           merge-multiple: true
 
