@@ -15,8 +15,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-sdist
-          path: dist/*.tar.gz
+          name: Packages
+          path: ./dist/*.tar.gz
           
   build-wheels:
     needs: [build_sdist]
@@ -91,7 +91,7 @@ jobs:
       - name: Upload wheels to GitHub
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.python[0] }}-${{ matrix.buildplat[0] }}.whl
+          name: Packages
           path: ./dist/*.whl
 
   # pypi-publish:

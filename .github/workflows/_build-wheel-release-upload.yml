@@ -69,7 +69,6 @@ jobs:
           commit_message: update changelog
           branch: main
 
-  # Check for rc as an ouput, use it as a variable
   github-pre-release:
     needs: [build-pure-python-package, build-non-pure-python-package]
     if: "always() && contains(github.ref, 'rc')"
@@ -134,18 +133,10 @@ jobs:
             exit 1
           fi
 
-      - name: Download Wheel files
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          pattern: '**/*.whl'  # Matches all .whl files
+          name: Packages
           path: dist
-
-      - name: Download Source Distribution files
-        uses: actions/download-artifact@v4
-        with:
-          pattern: '**/*.tar.gz'  # Matches all .tar.gz files
-          path: dist
-
 
       - name: Setup Python for PyPI upload
         uses: actions/setup-python@v5
