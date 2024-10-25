@@ -136,8 +136,8 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          name: Packages
           path: dist
-          merge-multiple: true
 
       - name: Setup Python for PyPI upload
         uses: actions/setup-python@v5
@@ -153,9 +153,8 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-        # FIXME: USE twine upload dist/* --verbose
         run: |
-          twine upload --repository testpypi dist/* --verbose
+          twine upload dist/* --verbose
 
   deploy-docs:
     needs: [pypi-publish]
