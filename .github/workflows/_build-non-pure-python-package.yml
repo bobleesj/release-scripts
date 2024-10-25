@@ -94,30 +94,30 @@ jobs:
           name: ${{ matrix.python[0] }}-${{ matrix.buildplat[0] }}.whl
           path: ./dist/*.whl
 
-  pypi-publish:
-    needs: [build-wheels]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: '**/*' # Make sure all files are downloaded, including wheels
-          path: dist
-          merge-multiple: true
+  # pypi-publish:
+  #   needs: [build-wheels]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         pattern: '**/*' # Make sure all files are downloaded, including wheels
+  #         path: dist
+  #         merge-multiple: true
 
-      - name: Setup Python for PyPI upload
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+  #     - name: Setup Python for PyPI upload
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.12'
   
-      - name: Install Twine
-        run: |
-          python -m pip install --upgrade pip
-          pip install twine
+  #     - name: Install Twine
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install twine
   
-      - name: Publish package to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-        # FIXME: Remove Test PyPI
-        run: |
-          twine upload --repository testpypi dist/* --verbose
+  #     - name: Publish package to PyPI
+  #       env:
+  #         TWINE_USERNAME: __token__
+  #         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+  #       # FIXME: Remove Test PyPI
+  #       run: |
+  #         twine upload --repository testpypi dist/* --verbose
