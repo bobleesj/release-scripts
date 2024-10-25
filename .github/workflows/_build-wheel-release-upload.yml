@@ -136,8 +136,9 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: Packages
+          pattern: '**/*' # Make sure all files are downloaded, including wheels
           path: dist
+          merge-multiple: true
 
       - name: Setup Python for PyPI upload
         uses: actions/setup-python@v5
@@ -153,8 +154,9 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        # FIXME: USE twine upload dist/* --verbose
         run: |
-          twine upload dist/* --verbose
+          twine upload --repository testpypi dist/* --verbose
 
   deploy-docs:
     needs: [pypi-publish]
