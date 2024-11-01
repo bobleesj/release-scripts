@@ -87,9 +87,3 @@ jobs:
           CONDA_PREFIX: ${{ env.CONDA_PREFIX }}
         with:
           output-dir: dist
-
-      - name: Upload wheels to GitHub
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.python[0] }}-${{ matrix.buildplat[0] }}.whl
-          path: ./dist/*.whl
