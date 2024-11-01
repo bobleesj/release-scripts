@@ -68,7 +68,6 @@ jobs:
         run: |
           if ${{ inputs.headless }}; then
             export DISPLAY=:99
-
           fi
           pytest --cov
           coverage report -m
@@ -79,5 +78,6 @@ jobs:
         with:
           verbose: true
           fail_ci_if_error: true
+          dry_run: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
