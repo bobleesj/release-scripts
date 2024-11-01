@@ -18,6 +18,10 @@ on:
         default: false
         required: false
         type: boolean
+    secrets:
+      CODECOV_TOKEN:
+        description: 'Codecov token'
+        required: true
 
 jobs:
   validate:
@@ -67,3 +71,9 @@ jobs:
 
           fi
           python -m pytest
+
+      - name: Comment Codecov coverage reports 
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          dry_run: true
