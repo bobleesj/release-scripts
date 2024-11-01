@@ -72,12 +72,11 @@ jobs:
           pytest --cov
           coverage report -m
           codecov
-
+          
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           verbose: true
           fail_ci_if_error: true
-          dry_run: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
