@@ -27,7 +27,12 @@ def extract_news_items(file_path):
                 current_category = line.strip("**:").strip()
 
             # Only add if the line is not empty and not a category header
-            elif current_category and line and not line.startswith("* <news item>"):
+            elif (
+                current_category
+                and line
+                and not line.startswith("* <news item>")
+                and "no news" not in line.lower()
+            ):
                 news_items[current_category].append(line)
 
 
@@ -45,9 +50,6 @@ def write_merged_file():
             new_news_content += f"**{category_name}:**\n\n"
             # Add each item in the category
             for item in items:
-                # Skip the item if it contains "no news" or "No news"
-                if "no news" in item.lower():
-                    continue
                 new_news_content += f"{item}\n"
             new_news_content += "\n"
 
