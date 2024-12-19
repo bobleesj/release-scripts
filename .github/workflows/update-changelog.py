@@ -25,14 +25,10 @@ def extract_news_items(file_path):
             # Check if the line is a category header
             if line.startswith("**") and line.endswith(":**"):
                 current_category = line.strip("**:").strip()
-
+            elif "no news" in line.lower():
+                continue
             # Only add if the line is not empty and not a category header
-            elif (
-                current_category
-                and line
-                and not line.startswith("* <news item>")
-                and "no news" not in line.lower()
-            ):
+            elif current_category and line and not line.startswith("* <news item>"):
                 news_items[current_category].append(line)
 
 
