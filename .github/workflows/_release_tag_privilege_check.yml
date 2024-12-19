@@ -24,8 +24,8 @@ jobs:
     steps:
       - name: Check user role
         run: |
-          if [ "${{ github.actor }}" != "sbillinge" ]; then
+          if [ "${{ github.actor }}" != "bobleesj" ]; then
             echo "Error: Unauthorized user"
             exit 1
           fi
-          echo "User sbillinge is allowed to run this workflow."
+          echo "User bobleesj is allowed to run this workflow."
