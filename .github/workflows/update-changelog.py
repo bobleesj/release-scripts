@@ -43,8 +43,11 @@ def write_merged_file():
         if items:
             # Add category name e.g. Added, Changed, etc.
             new_news_content += f"**{category_name}:**\n\n"
+            # Add each item in the category
             for item in items:
-                # Add each item in the category
+                # Skip the item if it contains "no news" or "No news"
+                if "no news" in item.lower():
+                    continue
                 new_news_content += f"{item}\n"
             new_news_content += "\n"
 
