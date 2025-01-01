@@ -93,6 +93,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           prerelease: true
+          draft: true
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -122,47 +123,11 @@ jobs:
         with:
           body_path: CHANGELOG.txt
           token: ${{ secrets.GITHUB_TOKEN }}
-          draft: true
 
   deploy-docs:
     needs: [github-pre-release, github-release]
     if: always()
-    defaults:
-      run:
-        shell: bash -l {0}
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out ${{ inputs.project }}
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Fetches branches and tags
-
-      - name: Initialize miniconda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          activate-environment: build
-          auto-update-conda: true
-          environment-file: environment.yml
-          auto-activate-base: false
-          python-version: 3.13
-
-      - name: Conda config
-        run: >-
-          conda config --set always_yes yes
-          --set changeps1 no
-
-      - name: Install $and docs requirements
-        run: |
-          conda install --file requirements/conda.txt
-          conda install --file requirements/docs.txt
-          python -m pip install . --no-deps
-
-      - name: build documents
-        run: make -C doc html
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc/build/html
+    uses: ./.github/workflows/_publish-docs-on-release.yml
+    with:
+      project: ${{ inputs.project }}
+      c_extension: ${{ inputs.c_extension }}
