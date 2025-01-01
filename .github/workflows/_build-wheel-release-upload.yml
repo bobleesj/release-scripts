@@ -126,7 +126,7 @@ jobs:
           draft: true
 
   deploy-docs:
-    needs: [build-pure-python-package, build-non-pure-python-package]
+    needs: [github-pre-release, github-release]
     if: always()
     defaults:
       run:
