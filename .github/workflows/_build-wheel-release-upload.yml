@@ -134,10 +134,10 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Check out
+      - name: Check out ${{ inputs.project }}
         uses: actions/checkout@v4
         with:
-          ref: main
+          fetch-depth: 0  # Fetches branches and tags
 
       - name: Initialize miniconda
         uses: conda-incubator/setup-miniconda@v3
