@@ -95,6 +95,7 @@ jobs:
           prerelease: true
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
+          draft: true
 
   github-release:
     needs: [update-changelog]
@@ -122,40 +123,47 @@ jobs:
         with:
           body_path: CHANGELOG.txt
           token: ${{ secrets.GITHUB_TOKEN }}
+          draft: true
 
-  pypi-publish:
-    needs: [github-pre-release, github-release]
+  deploy-docs:
+    needs: [build-pure-python-package, build-non-pure-python-package]
+    if: always()
+    defaults:
+      run:
+        shell: bash -l {0}
+
     runs-on: ubuntu-latest
-    if: always()  # This job will always initiate regardless of the success or failure of the needed jobs
     steps:
-      - name: Fail pypi-publish job if github-(pre)-release job failed
-        run: |
-          if [ "${{ needs.github-pre-release.result }}" == 'success' ] || [ "${{ needs.github-release.result }}" == 'success' ]; then
-            echo "Ready for PyPI release..."
-          else
-            echo "Previous github-(pre)-release job failed; exiting..."
-            exit 1
-          fi
-
-      - uses: actions/download-artifact@v4
+      - name: Check out
+        uses: actions/checkout@v4
         with:
-          pattern: '**/*' # Make sure all files are downloaded, including wheels
-          path: dist
-          merge-multiple: true
+          fetch-depth: 0  # Fetches branches and tags
 
-      - name: Setup Python for PyPI upload
-        uses: actions/setup-python@v5
+      - name: Initialize miniconda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: '3.13'
+          activate-environment: build
+          auto-update-conda: true
+          environment-file: environment.yml
+          auto-activate-base: false
+          python-version: 3.13
 
-      - name: Install Twine
-        run: |
-          python -m pip install --upgrade pip
-          pip install twine
+      - name: Conda config
+        run: >-
+          conda config --set always_yes yes
+          --set changeps1 no
 
-      - name: Publish package to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+      - name: Install $and docs requirements
         run: |
-          twine upload dist/* --verbose
+          conda install --file requirements/conda.txt
+          conda install --file requirements/docs.txt
+          python -m pip install . --no-deps
+
+      - name: build documents
+        run: make -C doc html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc/build/html
